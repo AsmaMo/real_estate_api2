@@ -1,0 +1,9 @@
+flask
+scikit-learn==1.6.1
+xgboost
+lightgbm
+catboost
+pandas
+numpy
+joblib
+gunicorn
