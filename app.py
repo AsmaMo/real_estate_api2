@@ -10,37 +10,34 @@ model = joblib.load('model.pkl')
 
 # إعداد تطبيق Flask
 app = Flask(__name__)
-CORS(app) 
-@app.route('/predict', methods=['POST'])
-def predict():
-    data = request.get_json()
-    # هنا يمكنك وضع منطق التنبؤ
-    result = {"prediction": "12345"}
-    return jsonify(result)
+CORS(app)
 
-                              
+# نقطة البداية (home)
+@app.route('/')
 def home():
-    return "Real Estate Ensemble Price Prediction API is Running."
+    return "✅ Real Estate Ensemble Price Prediction API is Running."
 
+# مسار التنبؤ
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
         data = request.get_json(force=True)
 
-        # تحويل الداتا إلى DataFrame
+        # تحويل البيانات إلى DataFrame
         input_df = pd.DataFrame([data])
 
-        # المعالجة بنفس الـ preprocessor الذي دربناه
+        # تطبيق المعالجة المسبقة
         input_processed = preprocessor.transform(input_df)
 
-        # التنبؤ
+        # إجراء التنبؤ
         y_pred_log = model.predict(input_processed)
-        y_pred = np.expm1(y_pred_log)
+        y_pred = np.expm1(y_pred_log)  # Inverse of log1p
 
         return jsonify({'predicted_price': float(y_pred[0])})
 
     except Exception as e:
         return jsonify({'error': str(e)})
 
+# لتشغيل الخادم محليًا فقط
 if __name__ == '__main__':
     app.run(debug=True)
