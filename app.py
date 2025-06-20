@@ -11,11 +11,12 @@ model = joblib.load('model.pkl')
 # إعداد تطبيق Flask
 app = Flask(__name__)
 CORS(app) 
-@app.route('/predict',method=['POST])
+@app.route('/predict', methods=['POST'])
 def predict():
-   data = request.json
-   #your prediction logic
-   return jsonfy('price':12345)
+    data = request.get_json()
+    # هنا يمكنك وضع منطق التنبؤ
+    result = {"prediction": "12345"}
+    return jsonify(result)
 
                               
 def home():
