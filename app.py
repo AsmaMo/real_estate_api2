@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import joblib
 import numpy as np
 import pandas as pd
@@ -9,8 +10,14 @@ model = joblib.load('model.pkl')
 
 # إعداد تطبيق Flask
 app = Flask(__name__)
+CORS(app) 
+@app.route('/predict',method=['POST])
+def predict():
+   data = request.json
+   #your prediction logic
+   return jsonfy('price':12345)
 
-@app.route('/')
+                              
 def home():
     return "Real Estate Ensemble Price Prediction API is Running."
 
